@@ -1,0 +1,9 @@
+{
+  "attack_feature_selection": "Evasion: Payload",
+  "feature_selection_type": "perturbed",
+  "preprocessing": "robust",
+  "classifiers": ["RF", "KNN"],
+  "weights": [1, 2],
+  "adversarial_training_types": ["none", "HSJ"],
+  "ensemble_vote_type": "hard"
+}

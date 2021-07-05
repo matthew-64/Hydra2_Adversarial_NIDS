@@ -1,0 +1,11 @@
+{
+  "attack_feature_selection": "Evasion: Rate",
+  "feature_selection_type": "all",
+  "preprocessing": "robust",
+  "classifiers": ["RF", "KNN", "SVM", "LR"],
+  "weights": [1, 2, 1, 1],
+  "adversarial_training_types": ["HSJ", "HSJ", "PGD", "HSJ"],
+  "ensemble_vote_type": "hard"
+}
+
+

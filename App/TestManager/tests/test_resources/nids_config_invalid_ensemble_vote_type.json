@@ -1,0 +1,9 @@
+{
+  "attack_feature_selection": "",
+  "feature_selection_type": "all",
+  "preprocessing": "robust",
+  "classifiers": ["RF", "KNN", "SVM", "LR"],
+  "weights": [1, 2, 3, 4],
+  "adversarial_training_types": ["FGSM", "BIM", "BIM", "HSJ"],
+  "ensemble_vote_type": "abc"
+}

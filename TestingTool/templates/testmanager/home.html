@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<!--
+File: home.html
+Author: James Aiken
+Desc: Html file for the main page of the Hydra frontend
+      Contains functionality for adversarial test configuration
+      and submission, as well as links to other pages within tool.
+
+-->
+<html>
+
+<head>
+    <title>Hydra Adversarial Testing Tool</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type='text/css' />
+    <meta http-equiv="refresh" content="12; URL=http://127.0.0.1:8000/">
+</head>
+
+<body>
+    <header>
+        <!-- Header of web page, including title and nav bar -->
+        <div class="headerContainer">
+            <div id="branding">
+                <h1><span class="highlight">Hydra</span> Adversarial Testing Tool</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="current"><a href="home.html">Home</a></li>
+                    <li><a href="manual.html">Documentation</a></li>
+                    <li><a href="https://gitlab.eeecs.qub.ac.uk/40151282/HydraAndNeptune_ResearchProject"
+                            target="_blank">Gitlab</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="main">
+        <div class="container">
+            <article id="main-col">
+                <ul id="services">
+                    <li>
+                        <h3>Live Test List</h3>
+                        <!-- Dynamically populated test table -->
+                        <table id="liveTestTable">
+                            <tr style="background-color: #00A5CF;">
+                                <th>Test Number</th>
+                                <th>Submission Time</th>
+                                <th>Target Classifier</th>
+                                <th>Network Attack</th>
+                                <th>Adversarial Testing Attack</th>
+                                <th>Test Results</th>
+                            </tr>
+                            {% for test in tests %}
+                            <tr>
+                                <td style="text-align:center;">{{ test.id }}</td>
+                                <td>{{ test.submissionTime }}</td>
+                                <td>{{ test.targetClassifier }}</td>
+                                <td>{{ test.networkAttack }}</td>
+                                <td style="width:20%;">
+                                    <div class="tooltip">
+                                        <span class="tooltiptext">
+                                            <p id="attackTooltip">
+                                                {{test.description}}
+                                            </p>
+                                        </span>
+                                        {{ test.addAttackType }}
+                                    </div>
+                                </td>
+                                <td style="width:40%;">{{ test.results }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </li>
+                </ul>
+            </article>
+            <br>
+        </div>
+
+        <div class="container">
+            <article id="config-col">
+                <!-- Network configuration menu -->
+                <ul id="services">
+                    <li>
+                        <h3 style="padding-bottom:2%;">Configuration</h3>
+                        <p>Network Type:</p>
+                        <select name="networkSelect" style="width:80%;">
+                            <!-- <option value="0">Network type...</option> -->
+                            <option value="1">Mininet</option>
+                            <!-- <option value="2">Other</option> -->
+                        </select>
+                        <br> <br>
+                        <p>OpenFlow Port:</p>
+                        <select name="OpenFlow Port" style="width:80%;">
+                            <!-- <option value="0">OpenFlow Port...</option> -->
+                            <option value="1">6653</option>
+                            <!-- <option value="2">Other</option> -->
+                        </select>
+                        <br> <br>
+                        <p>OpenFlow IP:</p>
+                        <select name="OpenFlow IP" style="width:80%;">
+                            <!-- <option value="0">OpenFlow IP...</option> -->
+                            <option value="1">127.0.0.1</option>
+                            <!-- <option value="2">Other</option> -->
+                        </select>
+                        <br> <br>
+                        <p>Network Topology:</p>
+                        <select id="topoSelect" name="name" style="width:80%; margin-bottom:10%;"
+                            onchange="change_network_topo();">
+                            <!-- <option value="0">Topology...</option> -->
+                            <option value="1">14h/1s/1c</option>
+                            <!-- <option value="2">Other</option> -->
+                        </select>
+                        <div id="topology" style="display:none;">
+                            <img class="topo" src="{% static 'img/Topology.png' %}" />
+                        </div>
+                        <!-- <p>Network Attack</p>
+                        <select name="networkattack" style="width:80%;">
+                            <option value="1">SYN Flood</option>
+                            <option value="2">UDP Flood</option>
+                        </select>
+                        <p>Adversarial Evasion method</p>
+                        <select name="adattack" style="width:80%;">
+                            <option value="0">Adversarial method...</option>
+                            <option value="1">Evasion: Rate</option>
+                            <option value="2">Evasion: Payload</option>
+                            <option value="3">Evasion: Pairflow</option>
+                            <option value="4">Evasion: Rate+Payload</option>
+                            <option value="5">Evasion: Rate+Pairflow</option>
+                            <option value="6">Evasion: Payload+Pairflow</option>
+                            <option value="7">Evasion: Stealth</option>
+                        </select> -->
+
+                    </li>
+                </ul>
+            </article>
+            <article id="test-col">
+                <ul id="services">
+                    <li>
+                        <h3>Adversarial Defence</h3> <br>
+                        <!-- Table for adversarial test configuration -->
+                        <table id="testTable">
+                            <th>Network Attack</th>
+                            <th>Adversarail Attack
+                            <th>Pre-processing</th>
+                            <th>Classifier</th>
+                            <th>Adversarial training</th>
+                            <th>Ensemble weight</th>
+                            <!-- <th>Network Attack</th>
+                                <th>Adversarial Testing Attack</th> -->
+                            <th>Submission</th>
+                            </tr>
+                            <tr>
+                                <td><select id="networkattack1" style="width:80%;">
+                                        <option value="1">SYN Flood</option>
+                                    </select>
+                                </td>
+                                <td><select id="adattack1" style="width:80%;">
+                                        <option value="0">Adversarial method...</option>
+                                        <option value="1">Evasion: Rate</option>
+                                        <option value="2">Evasion: Payload</option>
+                                        <option value="3">Evasion: Pairflow</option>
+                                        <option value="4">Evasion: Rate+Payload</option>
+                                        <option value="5">Evasion: Rate+Pairflow</option>
+                                        <option value="6">Evasion: Payload+Pairflow</option>
+                                        <option value="7">Evasion: Stealth</option>
+                                    </select>
+                                </td>
+
+                                <td><select id="preprocessing1" style="width:80%;">
+                                        <option value="robust">Robust</option>
+                                        <option value="normalise">Normalise</option>
+                                        <option value="standardise">Standardise</option>
+                                        <option value="none">None</option>
+                                    </select>
+                                </td>
+                                <td><select id="classifier1" style="width:80%;">
+                                        <option value="0">Select classifier...</option>
+                                        <option value="RF">RF</option>
+                                        <option value="KNN">KNN</option>
+                                        <option value="SVM">SVM</option>
+                                        <option value="LR">LR</option>
+                                    </select>
+                                </td>
+                                <td><select id="adtraining1" style="width:80%;">
+                                        <option value="none">None</option>
+                                        <option value="FGSM">FGSM (SVM/LR only)</option>
+                                        <option value="BIM">BIM (SVM/LR only)</option>
+                                        <option value="PGD">PGD (SVM/LR only)</option>
+                                        <option value="HSJ">HSJ</option>
+                                    </select>
+                                </td>
+                                <td><select id="weight1" style="width:80%;">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+
+                                    </select>
+                                </td>
+
+
+                                <td><button type="button" onclick="submit_test()" value="Insert row">Submit
+                                        Test</button></td>
+                                <form id="myForm" method="post">
+                                    {% csrf_token %}
+
+                                    <!-- document.getElementById('networkAttackForm').value = netAttackValue;
+                                            document.getElementById('adAttackForm').value = adAttckValue
+                                            document.getElementById('preprocessingForm') = preprocessing1Value
+                                            document.getElementById('classifierForm') = classifier1Value
+                                            document.getElementById('adtrainingForm') = adTraining1Value
+                                            document.getElementById('weightForm') = weight1Value -->
+                                    <input type='hidden' id='networkAttackForm' name='networkAttack' value='' />
+                                    <input type='hidden' id='adAttackForm' name='addAttackType' value='' />
+                                    <input type='hidden' id='preprocessingForm' name='preprocessing' value='' />
+                                    <input type='hidden' id='classifierForm' name='classifier' value='' />
+                                    <input type='hidden' id='adTrainingForm' name='adTraining' value='' />
+                                    <input type='hidden' id='ensembleWeightForm' name='ensembleWeight' value='' />
+
+                                    <input type='hidden' id='submissionTime' name='submissionTime' value='' />
+                                    <input type='hidden' id='results' name='results' value='' />
+                                    <input type='hidden' id='testNumber' name='testNumber' value='' />
+                                    <!-- <input type='hidden' id='testNumber' name='testNumber' value='' />
+                                    <input type='hidden' id='submissionTime' name='submissionTime' value='' />
+                                    <input type='hidden' id='targetClassifier' name='targetClassifier' value='' />
+                                    <input type='hidden' id='networkAttack' name='networkAttack' value='' />
+                                    <input type='hidden' id='addAttackType' name='addAttackType' value='' />
+                                    <input type='hidden' id='results' name='results' value='' /> -->
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </article>
+            <br>
+        </div>
+    </section>
+
+    <footer>
+        <p>Hydra Adversarial Testing Tool, Copyright &copy; 2019</p>
+        <p>James Aiken, Dr Sandra Scott-Hayward, Queen's University Belfast</p>
+    </footer>
+</body>
+
+</html>
+
+<script>
+    var configNetworkTopo
+
+    // change_network_topo()
+    //
+    // method to display the network topology when selected
+    //
+    function change_network_topo() {
+        var x = document.getElementById("topology");
+        var sel = document.getElementById("topoSelect");
+        configNetworkTopo = sel.options[sel.selectedIndex].text;
+
+        if (configNetworkTopo == "14h/1s/1c") {
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            }
+        } else {
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            }
+        }
+    }
+
+    // submit_test()
+    //
+    // method to handle the generation and submission of an html form
+    // when a user submits a configured adversarial test
+    //
+    //
+    function submit_test() {
+
+        // TODO: maybe abstract this to a single method
+        console.log("IHDEIHEIH")
+        // console.log(document.getElementById("adattack"))
+
+        var preprocessing1 = document.getElementById("preprocessing1")
+        var preprocessing1Value = preprocessing1.options[preprocessing1.selectedIndex].value
+
+        var classifier1 = document.getElementById("classifier1")
+        var classifier1Value = classifier1.options[classifier1.selectedIndex].value
+
+        var adTraining1 = document.getElementById("adtraining1")
+        var adTraining1Value = adTraining1.options[adTraining1.selectedIndex].value
+
+        var weight1 = document.getElementById("weight1")
+        var weight1Value = weight1.options[weight1.selectedIndex].value
+
+        var adAttack = document.getElementById("adattack1")
+        var adAttckValue = adAttack.options[adAttack.selectedIndex].value;
+
+        var networkAttack = document.getElementById("networkattack1")
+        var netAttackValue = networkAttack.options[networkAttack.selectedIndex].value;
+
+        if (classifier1 == 0) {
+            return;
+        }
+
+        document.getElementById('networkAttackForm').value = netAttackValue;
+        document.getElementById('adAttackForm').value = adAttckValue
+        document.getElementById('preprocessingForm') = preprocessing1Value
+        document.getElementById('classifierForm') = classifier1Value
+        document.getElementById('adTrainingForm') = adTraining1Value
+        document.getElementById('ensembleWeightForm') = weight1Value
+        document.getElementById('testNumber').value = "1";
+        // var tgtClassifier;
+        // var netAttack;
+        // var testAtt;
+
+        // TODO: Fix this bug so that the tgtClassifier value can be used
+        // tgtClassifier = "";
+        // if (document.getElementById("modelRF").checked) {
+        //     tgtClassifier = tgtClassifier.concat("1 ");
+        // } if (document.getElementById("modelKNN").checked) {
+        //     tgtClassifier = tgtClassifier.concat("2 ");
+        // } if (document.getElementById("modelSVM").checked) {
+        //     tgtClassifier = tgtClassifier.concat("3 ");
+        // } if (document.getElementById("modelNN").checked) {
+        //     tgtClassifier = tgtClassifier.concat("4 ");
+        // } if (document.getElementById("modelLR").checked) {
+        //     tgtClassifier = tgtClassifier.concat("5");
+        // }
+
+
+        // Add this check to selected model
+        // if (netAttackValue == 0 || testAttValue == 0 || tgtClassifier == "") {
+        //     return;
+        // }
+        // var netAttackValue = netAttack.options[netAttack.selectedIndex].text;
+        // var testAttArgValue = testAtt.options[testAtt.selectedIndex].text;
+
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+
+        // document.getElementById('testNumber').value = "1";
+        document.getElementById('submissionTime').value = time;
+        // document.getElementById('targetClassifier').value = tgtClassifier;
+        // document.getElementById('networkAttack').value = netAttackValue;
+        // document.getElementById('addAttackType').value = testAttValue;
+        document.getElementById('results').value = "pending...";
+        setTimeout("location.href = 'http://127.0.0.1:8000/'", 3000);
+        document.getElementById("myForm").submit();
+    }
+
+    // function submit_test() {
+    //     var tgtClassifier;
+    //     var netAttack;
+    //     var testAtt;
+
+    //     // TODO: Fix this bug so that the tgtClassifier value can be used
+    //     tgtClassifier = "";
+    //     if (document.getElementById("modelRF").checked) {
+    //         tgtClassifier = tgtClassifier.concat("1 ");
+    //     } if (document.getElementById("modelKNN").checked) {
+    //         tgtClassifier = tgtClassifier.concat("2 ");
+    //     } if (document.getElementById("modelSVM").checked) {
+    //         tgtClassifier = tgtClassifier.concat("3 ");
+    //     } if (document.getElementById("modelNN").checked) {
+    //         tgtClassifier = tgtClassifier.concat("4 ");
+    //     } if (document.getElementById("modelLR").checked) {
+    //         tgtClassifier = tgtClassifier.concat("5");
+    //     }
+
+    //     netAttack = document.getElementById("networkattack")
+    //     testAtt = document.getElementById("adattack")
+
+    //     netAttackValue = netAttack.options[netAttack.selectedIndex].value;
+    //     testAttValue = testAtt.options[testAtt.selectedIndex].value;
+
+    //     // Add this check to selected model
+    //     if (netAttackValue == 0 || testAttValue == 0 || tgtClassifier == "") {
+    //         return;
+    //     }
+    //     netAttackArg = netAttack.options[netAttack.selectedIndex].text;
+    //     testAttArg = testAtt.options[testAtt.selectedIndex].text;
+
+    //     var today = new Date();
+    //     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+    //     document.getElementById('testNumber').value = "1";
+    //     document.getElementById('submissionTime').value = time;
+    //     document.getElementById('targetClassifier').value = tgtClassifier;
+    //     document.getElementById('networkAttack').value = netAttackArg;
+    //     document.getElementById('addAttackType').value = testAttArg;
+    //     document.getElementById('results').value = "pending...";
+    //     setTimeout("location.href = 'http://127.0.0.1:8000/'", 3000);
+    //     document.getElementById("myForm").submit();
+    // }
+</script>

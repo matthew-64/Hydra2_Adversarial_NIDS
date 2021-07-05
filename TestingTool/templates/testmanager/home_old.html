@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<!--
+File: home.html
+Author: James Aiken
+Desc: Html file for the main page of the Hydra frontend
+      Contains functionality for adversarial test configuration
+      and submission, as well as links to other pages within tool.
+
+-->
+<html>
+
+<head>
+    <title>Hydra Adversarial Testing Tool</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type='text/css' />
+    <meta http-equiv="refresh" content="12; URL=http://127.0.0.1:8000/">
+</head>
+
+<body>
+    <header>
+        <!-- Header of web page, including title and nav bar -->
+        <div class="headerContainer">
+            <div id="branding">
+                <h1><span class="highlight">Hydra</span> Adversarial Testing Tool</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="current"><a href="home.html">Home</a></li>
+                    <li><a href="manual.html">Documentation</a></li>
+                    <li><a href="https://gitlab.eeecs.qub.ac.uk/40151282/HydraAndNeptune_ResearchProject"
+                            target="_blank">Gitlab</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="main">
+        <div class="container">
+            <article id="main-col">
+                <ul id="services">
+                    <li>
+                        <h3>Live Test List</h3>
+                        <!-- Dynamically populated test table -->
+                        <table id="liveTestTable">
+                            <tr style="background-color: #00A5CF;">
+                                <th>Test Number</th>
+                                <th>Submission Time</th>
+                                <th>Target Classifier</th>
+                                <th>Network Attack</th>
+                                <th>Adversarial Testing Attack</th>
+                                <th>Test Results</th>
+                            </tr>
+                            {% for test in tests %}
+                            <tr>
+                                <td style="text-align:center;">{{ test.id }}</td>
+                                <td>{{ test.submissionTime }}</td>
+                                <td>{{ test.targetClassifier }}</td>
+                                <td>{{ test.networkAttack }}</td>
+                                <td style="width:20%;">
+                                    <div class="tooltip">
+                                        <span class="tooltiptext">
+                                            <p id="attackTooltip">
+                                                {{test.description}}
+                                            </p>
+                                        </span>
+                                        {{ test.addAttackType }}
+                                    </div>
+                                </td>
+                                <td style="width:40%;">{{ test.results }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </li>
+                </ul>
+            </article>
+            <br>
+        </div>
+
+        <div class="container">
+            <article id="config-col">
+                <!-- Network configuration menu -->
+                <ul id="services">
+                    <li>
+                        <h3 style="padding-bottom:2%;">Configuration</h3>
+                        <p>Network Type:</p>
+                        <select name="networkSelect" style="width:80%;">
+                            <option value="0">Network type...</option>
+                            <option value="1">Mininet</option>
+                            <option value="2">Other</option>
+                        </select>
+                        <br> <br>
+                        <p>OpenFlow Port:</p>
+                        <select name="OpenFlow Port" style="width:80%;">
+                            <option value="0">OpenFlow Port...</option>
+                            <option value="1">6653</option>
+                            <option value="2">Other</option>
+                        </select>
+                        <br> <br>
+                        <p>OpenFlow IP:</p>
+                        <select name="OpenFlow IP" style="width:80%;">
+                            <option value="0">OpenFlow IP...</option>
+                            <option value="1">127.0.0.1</option>
+                            <option value="2">Other</option>
+                        </select>
+                        <br> <br>
+                        <p>Network Topology:</p>
+                        <select id="topoSelect" name="name" style="width:80%; margin-bottom:10%;"
+                            onchange="change_network_topo();">
+                            <option value="0">Topology...</option>
+                            <option value="1">14h/1s/1c</option>
+                            <option value="2">Other</option>
+                        </select>
+                        <div id="topology" style="display:none;">
+                            <img class="topo" src="{% static 'img/Topology.png' %}" />
+                        </div>
+                    </li>
+                </ul>
+            </article>
+            <article id="test-col">
+                <ul id="services">
+                    <li>
+                        <h3>Adversarial Tests</h3> <br>
+                        <!-- Table for adversarial test configuration -->
+                        <table id="testTable">
+                            <tr style="background-color: #00A5CF;">
+                                <th>Target Classifier</th>
+                                <th>Network Attack</th>
+                                <th>Adversarial Testing Attack</th>
+                                <th>Submission</th>
+                            </tr>
+                            <tr>
+                                <td>Random Forest Model</td>
+                                <td><select id="networkattack1" style="width:80%;">
+                                        <option value="0">Attack type...</option>
+                                        <option value="1">SYN Flood</option>
+                                        <option value="2">UDP Flood</option>
+                                    </select></td>
+                                <td><select id="adattack1" style="width:80%;">
+                                        <option value="0">Adversarial method...</option>
+                                        <option value="1">Evasion: Rate</option>
+                                        <option value="2">Evasion: Payload</option>
+                                        <option value="3">Evasion: Pairflow</option>
+                                        <option value="4">Evasion: Rate+Payload</option>
+                                        <option value="5">Evasion: Rate+Pairflow</option>
+                                        <option value="6">Evasion: Payload+Pairflow</option>
+                                        <option value="7">Evasion: Stealth</option>
+                                    </select></td>
+                                <td><button type="button" onclick="submit_test(1)" value="Insert row">Submit
+                                        Test</button></td>
+                                <form id="myForm" method="post">
+                                    {% csrf_token %}
+                                    <input type='hidden' id='testNumber' name='testNumber' value='' />
+                                    <input type='hidden' id='submissionTime' name='submissionTime' value='' />
+                                    <input type='hidden' id='targetClassifier' name='targetClassifier' value='' />
+                                    <input type='hidden' id='networkAttack' name='networkAttack' value='' />
+                                    <input type='hidden' id='addAttackType' name='addAttackType' value='' />
+                                    <input type='hidden' id='results' name='results' value='' />
+                            </tr>
+                            <tr>
+                                <td>KNN</td>
+                                <td><select id="networkattack2" style="width:80%;">
+                                        <option value="0">Attack type...</option>
+                                        <option value="1">SYN Flood</option>
+                                        <option value="2">UDP Flood</option>
+                                    </select></td>
+                                <td><select id="adattack2" style="width:80%;">
+                                        <option value="0">Adversarial method...</option>
+                                        <option value="1">Evasion: Rate</option>
+                                        <option value="2">Evasion: Payload</option>
+                                        <option value="3">Evasion: Pairflow</option>
+                                        <option value="4">Evasion: Rate+Payload</option>
+                                        <option value="5">Evasion: Rate+Pairflow</option>
+                                        <option value="6">Evasion: Payload+Pairflow</option>
+                                        <option value="7">Evasion: Stealth</option>
+                                    </select></td>
+                                <td><button type="button" onclick="submit_test(2)" value="Insert row">Submit
+                                        Test</button></td>
+                                <form id="myForm" method="post">
+                                    {% csrf_token %}
+                                    <input type='hidden' id='testNumber1' name='testNumber1' value='' />
+                                    <input type='hidden' id='submissionTime1' name='submissionTime1' value='' />
+                                    <input type='hidden' id='targetClassifier1' name='targetClassifier1' value='' />
+                                    <input type='hidden' id='networkAttack1' name='networkAttack1' value='' />
+                                    <input type='hidden' id='addAttackType1' name='addAttackType1' value='' />
+                                    <input type='hidden' id='results1' name='results1' value='' />
+                            </tr>
+                            <tr>
+                                <td>SVM</td>
+                                <td><select id="networkattack3" style="width:80%;">
+                                        <option value="0">Attack type...</option>
+                                        <option value="1">SYN Flood</option>
+                                        <option value="2">UDP Flood</option>
+                                    </select></td>
+                                <td><select id="adattack3" style="width:80%;">
+                                        <option value="0">Adversarial method...</option>
+                                        <option value="1">Evasion: Rate</option>
+                                        <option value="2">Evasion: Payload</option>
+                                        <option value="3">Evasion: Pairflow</option>
+                                        <option value="4">Evasion: Rate+Payload</option>
+                                        <option value="5">Evasion: Rate+Pairflow</option>
+                                        <option value="6">Evasion: Payload+Pairflow</option>
+                                        <option value="7">Evasion: Stealth</option>
+                                    </select></td>
+                                <td><button type="button" onclick="submit_test(3)" value="Insert row">Submit
+                                        Test</button></td>
+                                <form id="myForm" method="post">
+                                    {% csrf_token %}
+                                    <input type='hidden' id='testNumber2' name='testNumber2' value='' />
+                                    <input type='hidden' id='submissionTime2' name='submissionTime2' value='' />
+                                    <input type='hidden' id='targetClassifier2' name='targetClassifier2' value='' />
+                                    <input type='hidden' id='networkAttack2' name='networkAttack2' value='' />
+                                    <input type='hidden' id='addAttackType2' name='addAttackType2' value='' />
+                                    <input type='hidden' id='results2' name='results2' value='' />
+                            </tr>
+                            <tr>
+                                <td>Neural Network</td>
+                                <td><select id="networkattack4" style="width:80%;">
+                                        <option value="0">Attack type...</option>
+                                        <option value="1">SYN Flood</option>
+                                        <option value="2">UDP Flood</option>
+                                    </select></td>
+                                <td><select id="adattack4" style="width:80%;">
+                                        <option value="0">Adversarial method...</option>
+                                        <option value="1">Evasion: Rate</option>
+                                        <option value="2">Evasion: Payload</option>
+                                        <option value="3">Evasion: Pairflow</option>
+                                        <option value="4">Evasion: Rate+Payload</option>
+                                        <option value="5">Evasion: Rate+Pairflow</option>
+                                        <option value="6">Evasion: Payload+Pairflow</option>
+                                        <option value="7">Evasion: Stealth</option>
+                                    </select></td>
+                                <td><button type="button" onclick="submit_test(4)" value="Insert row">Submit
+                                        Test</button></td>
+                            </tr>
+                            <tr>
+                                <td>Logistic Regression</td>
+                                <td><select id="networkattack5" style="width:80%;">
+                                        <option value="0">Attack type...</option>
+                                        <option value="1">SYN Flood</option>
+                                        <option value="2">UDP Flood</option>
+                                    </select></td>
+                                <td><select id="adattack5" style="width:80%;">
+                                        <option value="0">Adversarial method...</option>
+                                        <option value="1">Evasion: Rate</option>
+                                        <option value="2">Evasion: Payload</option>
+                                        <option value="3">Evasion: Pairflow</option>
+                                        <option value="4">Evasion: Rate+Payload</option>
+                                        <option value="5">Evasion: Rate+Pairflow</option>
+                                        <option value="6">Evasion: Payload+Pairflow</option>
+                                        <option value="7">Evasion: Stealth</option>
+                                    </select></td>
+                                <td><button type="button" onclick="submit_test(5)" value="Insert row">Submit
+                                        Test</button></td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </article>
+            <br>
+        </div>
+    </section>
+
+    <footer>
+        <p>Hydra Adversarial Testing Tool, Copyright &copy; 2019</p>
+        <p>James Aiken, Dr Sandra Scott-Hayward, Queen's University Belfast</p>
+    </footer>
+</body>
+
+</html>
+
+<script>
+    var configNetworkTopo
+
+    // change_network_topo()
+    //
+    // method to display the network topology when selected
+    //
+    function change_network_topo() {
+        var x = document.getElementById("topology");
+        var sel = document.getElementById("topoSelect");
+        configNetworkTopo = sel.options[sel.selectedIndex].text;
+
+        if (configNetworkTopo == "14h/1s/1c") {
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            }
+        } else {
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            }
+        }
+    }
+
+    // submit_test()
+    //
+    // method to handle the generation and submission of an html form
+    // when a user submits a configured adversarial test
+    //
+    // Args: testID = ID of the test which determines ML classifier
+    //
+    function submit_test(testID) {
+        var tgtClassifier;
+        var netAttack;
+        var testAtt;
+
+        if (testID == 1) {
+            tgtClassifier = "Random Forest Model";
+            netAttack = document.getElementById("networkattack1")
+            testAtt = document.getElementById("adattack1")
+        } else if (testID == 2) {
+            tgtClassifier = "KNN";
+            netAttack = document.getElementById("networkattack2")
+            testAtt = document.getElementById("adattack2")
+        } else if (testID == 3) {
+            tgtClassifier = "SVM";
+            netAttack = document.getElementById("networkattack3")
+            testAtt = document.getElementById("adattack3")
+        } else if (testID == 4) {
+            tgtClassifier = "Neural Network";
+            netAttack = document.getElementById("networkattack4")
+            testAtt = document.getElementById("adattack4")
+        } else if (testID == 5) {
+            tgtClassifier = "Logistic Regression";
+            netAttack = document.getElementById("networkattack5")
+            testAtt = document.getElementById("adattack5")
+        } else {
+            return;
+        }
+
+        netAttackValue = netAttack.options[netAttack.selectedIndex].value;
+        testAttValue = testAtt.options[testAtt.selectedIndex].value;
+
+        if (netAttackValue == 0 || testAttValue == 0) {
+            return;
+        }
+        netAttackArg = netAttack.options[netAttack.selectedIndex].text;
+        testAttArg = testAtt.options[testAtt.selectedIndex].text;
+
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+        document.getElementById('testNumber').value = "1";
+        document.getElementById('submissionTime').value = time;
+        document.getElementById('targetClassifier').value = tgtClassifier;
+        document.getElementById('networkAttack').value = netAttackArg;
+        document.getElementById('addAttackType').value = testAttArg;
+        document.getElementById('results').value = "pending...";
+        setTimeout("location.href = 'http://127.0.0.1:8000/'", 3000);
+        document.getElementById("myForm").submit();
+    }
+</script>

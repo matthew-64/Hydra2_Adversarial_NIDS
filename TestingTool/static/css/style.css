@@ -1,0 +1,234 @@
+/*
+File: style.css
+Author: James Aiken
+Desc: Main style file for the Hydra tool.
+      Dictates styling for home.html and manual.html
+
+      Header, footer and container styles implemented from
+      Traversy Media's tutorial https://youtu.be/Wm6CUkswsNw
+*/
+body{
+  font: 15px/1.5 Arial, Helvetica,sans-serif;
+  padding:0;
+  margin:0;
+  background-color:#f4f4f4;
+}
+
+/* Global */
+.headerContainer{
+  width:85%;
+  margin:auto;
+  overflow:hidden;
+}
+
+.container{
+  width:85%;
+  margin:auto;
+  margin-bottom: 4%;
+  margin-top: 4%;
+  overflow:hidden;
+}
+
+ul{
+  margin:0;
+  padding:0;
+}
+
+.button_1{
+  height:38px;
+  background:#00A5CF;
+  border:0;
+  padding-left: 20px;
+  padding-right:20px;
+  color:#ffffff;
+}
+
+.dark{
+  padding:15px;
+  background:#004E64;
+  color:#ffffff;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+/* Header **/
+header{
+  background:#004E64;
+  color:#ffffff;
+  padding-top:30px;
+  min-height:70px;
+  border-bottom:#00A5CF 3px solid;
+}
+
+header a{
+  color:#ffffff;
+  text-decoration:none;
+  text-transform: uppercase;
+  font-size:16px;
+}
+
+header li{
+  float:left;
+  display:inline;
+  padding: 0 20px 0 20px;
+}
+
+header #branding{
+  float:left;
+}
+
+header #branding h1{
+  margin:0;
+}
+
+header nav{
+  float:right;
+  margin-top:10px;
+}
+
+header .highlight, header .current a{
+  color:#9FFFCB;
+  font-weight:bold;
+}
+
+header a:hover{
+  color:#cccccc;
+  font-weight:bold;
+}
+
+/* Sidebar */
+aside#sidebar{
+  float:right;
+  width:30%;
+  margin-top:10px;
+}
+
+aside#sidebar .quote input, aside#sidebar .quote textarea{
+  width:90%;
+  padding:5px;
+}
+
+/* Main-col */
+article#test-col{
+  float:center;
+  width:90%;
+}
+
+article#config-col{
+  float:left;
+  width:30%;
+}
+
+article#test-col{
+  float:right;
+  width:67%;
+}
+
+/* Services */
+ul#services li{
+  list-style: none;
+  padding:20px;
+  border: #cccccc solid 1px;
+  margin-bottom:5px;
+  background:#e6e6e6;
+}
+
+footer{
+  padding:20px;
+  margin-top:20px;
+  color:#ffffff;
+  background-color:#00A5CF;
+  text-align: center;
+}
+
+.button-wrapper {
+  text-align: center;
+  margin-top:10%;
+}
+
+.button {
+  position: absolute;
+}
+
+/* Style methods for the tables used in Hydra*/
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+tr:nth-child(odd) {
+  background-color: #E2FFEF;
+}
+
+/* Style for topology image in home.html */
+img.topo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7%;
+  height:70%;
+  width:70%;
+}
+
+/* Header3 padding increase */
+h3  {text-align: center;
+   padding-top: 2%;}
+}
+
+/* Tooltip code from w3schools https://www.w3schools.com/css/css_tooltip.asp */
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 10px dotted black; /* If you want dots under the hoverable text */
+  opacity: 0.8;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 50%;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 10px;
+  opacity: 0.8;
+
+  /* Position the tooltip text*/
+  position: absolute;
+  z-index: 1;
+  margin: -5% -20% auto;
+}
+
+.tooltip .tooltiptext::after {
+ content: " ";
+ position: absolute;
+ top: 100%; /* At the bottom of the tooltip */
+ left: 50%;
+ margin-left: -5px;
+ border-width: 5px;
+ border-style: solid;
+ border-color: black transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 0.8;
+}
+
+.center {
+  text-align: center;
+}

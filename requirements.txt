@@ -1,0 +1,6 @@
+pandas
+scikit-learn==0.24.1
+# scikit-learn>=0.22.2,==0.23.*
+numpy
+django
+adversarial-robustness-toolbox==1.6.0

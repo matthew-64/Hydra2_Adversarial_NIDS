@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+File: manual.html
+Author: James Aiken
+Desc: Html file for the documentation page of the Hydra tool
+      Contains adversarial test descriptions and use-case tutorials
+-->
+<html>
+  <head>
+    <title>Hydra Adversarial Testing Tool</title>
+    {% load staticfiles %} <!-- Dynamically load static image files -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type='text/css'/>
+  </head>
+  <body>
+    <header> <!-- Header of web page, including title and nav bar -->
+      <div class="headerContainer">
+        <div id="branding">
+          <h1><span class="highlight">Hydra</span> Adversarial Testing Tool</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li class="current"><a href="manual.html">Documentation</a></li>
+            <li><a href="https://gitlab.eeecs.qub.ac.uk/40151282/HydraAndNeptune_ResearchProject" target="_blank">Gitlab</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section id="main">
+      <div class="container">
+        <article id="main-col">
+          <ul id="services">
+            <li style="margin-bottom:3%;">
+              <h2>Documentation</h2>
+            </li>
+            <li style="margin-bottom:3%;">
+              <h3>Attack Suite</h3><br> <!-- Table of descriptions for each adversarial attack -->
+              <p style="text-align:center;">Attack perturbation amounts are chosen based
+              on the optimum classification confidence values gathered on the research dataset</p><br>
+              <table align="center" id="attackSuiteTable" style="width: 80%; margin-bottom:5%;">
+                <tr style="background-color: #00A5CF;">
+                  <th style="width:30%;">Adversarial Attack ID</th>
+                  <th>Description</th>
+                </tr>
+                <tr>
+                  <td style="width:30%; text-align:center;">Evasion: Rate</td>
+                  <td>An evasion attack which performs SYN floods with a low and slow
+                      packet rate of approximately 20pps.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:30%; text-align:center;">Evasion: Payload</td>
+                  <td>An evasion attack which performs SYN floods with perturbed payload
+                      sizes, with a payload of 90 bytes.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:30%; text-align:center;">Evasion: Pairflow</td>
+                  <td>An evasion attack with performs SYN floods with forged bidrectional
+                      traffic to give the appearance of legitimate communications
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:30%; text-align:center;">Evasion: Rate+Payload</td>
+                  <td>An evasion attack which performs SYN floods with a low and slow
+                      packet rate of approximately 20pps and a perturbed payload size of 90 bytes
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:30%; text-align:center;">Evasion: Rate+Pairflow</td>
+                  <td>An evasion attack which performs stealth SYN floods with perturbed
+                      packet rates of 20pps and forged bidirectional traffic to give the appearance
+                      of legitimate communicatio
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:30%; text-align:center;">Evasion: Payload+Pairflow</td>
+                  <td>An evasion attack which performs stealth SYN floods with perturbed
+                      packet payload sizes of 90 bytes and forged bidirectional traffic to give
+                      the appearance of legitimate communications.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:30%; text-align:center;">Evasion: Stealth</td>
+                  <td>An evasion attack which performs stealth SYN floods with perturbed
+                      slow packet rates of 20pps, increased payload sizes of 90 bytes and forged
+                      bidirectional traffic to give the appearance of legitimate communications.
+                  </td>
+                </tr>
+              </table>
+            </li>
+            <li style="margin-bottom:1%;">
+              <h3>Use-case tutorial</h3> <!-- Documentation of the use-case and the UI elements -->
+              <img class="topo" src="{% static 'img/Usecase.png' %}"/>
+              <ol type="1" style="width:70%; padding-left:15%;">
+                <li>
+                  1.	Configuration – Within the configuration element of the GUI, a user configures the setup of the network within which the adversarial tests will take place.  Choose your network type and topology before progressing to step 2.
+                </li>
+                <li>
+                  2.	Test Creation – Once the network is configured, the user can craft an adversarial attack using the provided selection boxes.
+                    <blockquote>a.	Machine learning classifier – The choice of machine learning classifier to perform an attack against.  Different classifiers have different weaknesses therefore the attacks will be individually tailored to exploit them as they classify traffic within a NIDS.  Currently the tool supports Random Forest, SVM, KNN and Neural Network.</blockquote>
+                    <blockquote>b.	Network attack – Different network attacks display differing characteristics therefore the user can choose which attack to perform that will be the basis of the adversarial attack.  The system has options for a SYN Flood and a UDP Flood (DDoS).</blockquote>
+                    <blockquote>c.	Adversarial attack – This is the adversarial method applied to the network attack.  The user has a choice of numerous evasion and overstimulation methods to attempt to circumvent the NIDS classifier.</blockquote>
+                </li>
+                <li>
+                  3.  Test Submission – A test will only submit when all settings have been selected, otherwise the adversarial attack hasn’t been configured in full.  Once a test is submitted, it will appear in element 3 of the Figure, where the result will be “pending”, and the test will be running.
+                </li>
+                <li>
+                  4.  Test Table –  This table contains a list of all tests past and present within the database.  If a test is currently running and hasn't returned a result, the result will read 'pending'.  Hovering over the adversarial attack cells of each test will display a tooltip to provide further information on the attack.
+                </li>
+              </ol> <br><br>
+              <h3>Adversarial Tooltip </h3>
+              <img class="topo" src="{% static 'img/Tooltip.png' %}"/>
+              <p style="text-align:center;">Hovering over the adversarial attack type provides a helpful tooltip.</p>
+            </li>
+          </ul>
+        </article>
+        <br>
+      </div>
+    </section>
+
+    <footer>
+      <p>Hydra Adversarial Testing Tool, Copyright &copy; 2019</p>
+      <p>James Aiken, Dr Sandra Scott-Hayward, Queen's University Belfast</p>
+    </footer>
+  </body>
+</html>

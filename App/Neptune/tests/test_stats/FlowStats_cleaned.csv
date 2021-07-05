@@ -1,0 +1,3 @@
+eth_src,eth_dst,ip_proto,state_flag,pkts,src_pkts,dst_pkts,bytes,src_bytes,dst_bytes,pkts_per_sec,bytes_per_second,bytes_per_packet,packet_pair_ratio,pair_flow
+18:66:da:9b:e3:7d,b8:ac:6f:36:08:f5,6,-1,26,14,12,6318,3522,2796,2.6,631.8,243,0.793867120954,1
+18:66:da:9b:e3:71,b8:ac:6f:36:08:f5,6,-1,26,14,12,6318,3522,2796,2.6,631.8,243,0.793867120954,1

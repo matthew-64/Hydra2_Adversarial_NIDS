@@ -1,0 +1,9 @@
+{
+  "attack_feature_selection": "Evasion: Payload+Pairflow",
+  "feature_selection_type": "all",
+  "preprocessing": "robust",
+  "classifiers": ["LR"],
+  "weights": [1],
+  "adversarial_training_types": ["FGSM"],
+  "ensemble_vote_type": "hard"
+}

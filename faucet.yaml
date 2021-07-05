@@ -1,0 +1,86 @@
+vlans:
+  demo:
+    description: demo network
+    vid: 100
+
+dps:
+  sw1:
+    dp_id: 0x1
+    hardware: Open vSwitch
+    interfaces:
+      1:
+        acl_in: mir
+        description: host1
+        name: h1
+        native_vlan: demo
+      2:
+        acl_in: mir
+        description: host2
+        name: h2
+        native_vlan: demo
+      3:
+        acl_in: mir
+        description: host3
+        name: h3
+        native_vlan: demo
+      4:
+        acl_in: mir
+        description: host4
+        name: h4
+        native_vlan: demo
+      5:
+        acl_in: mir
+        description: host5
+        name: h5
+        native_vlan: demo
+      6:
+        acl_in: mir
+        description: host6
+        name: h6
+        native_vlan: demo
+      7:
+        acl_in: mir
+        description: host7
+        name: h7
+        native_vlan: demo
+      8:
+        acl_in: mir
+        description: host8
+        name: h8
+        native_vlan: demo
+      9:
+        acl_in: mir
+        description: host9
+        name: h9
+        native_vlan: demo
+      10:
+        description: mirror1
+        name: h10
+        output_only: true
+      11:
+        acl_in: mir
+        description: host11
+        name: h11
+        native_vlan: demo
+      12:
+        acl_in: mir
+        description: host12
+        name: h12
+        native_vlan: demo
+      13:
+        acl_in: mir
+        description: host13
+        name: h13
+        native_vlan: demo
+      14:
+        acl_in: mir
+        description: host14
+        name: h14
+        native_vlan: demo
+
+acls:
+  mir:
+  - rule:
+      actions:
+        allow: 1
+        mirror: 10
