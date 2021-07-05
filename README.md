@@ -10,13 +10,12 @@ Matthew Elliott and Sandra Scott-Hayward
 **For details on background literature, architecture, results, analysis and conclusions,  
 please see [`finished_work/Hydra2.pdf`](./finished_work/Hydra2.pdf).**
 
+## Summary Presentation
+[![alt text](./imgs/presentation_thumbnail.png)](https://youtu.be/vhyMVcHPIbI)
+
 ## Introduction
 As society and technology develop, more and more of our time is spent online, from shopping to socialising, working to banking. Ensuring our safety from malicious actors trying to capitalise on this digitisation is becoming ever more important. One such system that was developed to defend against attacks is a Network Intrusion Detection System (NIDS), a common tool used to detect intrusion attempts. Early adaptions used pre-configured signature detection to recognise attacks. Those early models evolved to use machine learning based anomaly detection to monitor real-time network activity and autonomously recognise intrusion attempts. Worryingly, the relatively new field of adversarial machine learning has been shown to be extremely effective in creating adversarial attacks that can easily bypass the NIDS. Adversary-aware feature selection, adversarial training and ensemble method were all used to increase the adversarial attack detection rate of the ML classifiers in the NIDS. Adversary-aware feature selection was the most effective, increasing the accuracy of three of the four classifiers from 0 for some adversarial attacks, to 0.98 for all adversarial attacks. In this work we build Hydra2, a tool to let users prototype an attack in a sand-box environment that has the ability of detecting adversarial attacks. The users can then quantify the results by adversarially attacking their prototype NIDS.
 
-## Presentation of Usage and Results
-[![alt text](./imgs/presentation_thumbnail.png)](https://youtu.be/vhyMVcHPIbI)
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/vhyMVcHPIbI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ## Getting Started
 
 Hydra 2 is designed to run on Ubuntu 18.04
