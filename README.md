@@ -114,7 +114,7 @@ Enter in your desired configuration for neptune. Here is an example:
   "attack_feature_selection": "Evasion: Pairflow",
   "feature_selection_type": "all",
   "preprocessing": "robust",
-  "classifiers": ["LR", "SVM],
+  "classifiers": ["LR", "SVM"],
   "weights": [1, 2],
   "adversarial_training_types": ["none" ,"FGSM"],
   "ensemble_vote_type": "hard"
