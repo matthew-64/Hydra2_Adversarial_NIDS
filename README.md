@@ -1,4 +1,4 @@
-# Hydra2 Testing Adversarial Defences of NIDS in SDN
+# Hydra2 Testing Adversarial Defences of a Network Intrusion Dectaction System.
 
 This repository contains the code for Hydra2, which encapsulates  Neptune, a machine learning based network intrusion detection system (NIDS) for Software-Defined Networks (SDN).
 
